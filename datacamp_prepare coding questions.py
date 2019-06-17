@@ -89,9 +89,9 @@ new_text = ' '.join(word_list)
 print(new_text)
 
 # fix string errors
-heroes = ''
-heroes['Hair color'] = ('No Hair','BLOND','BLACK')
-heroes['Gender'] = ['Fmale','male']
+import pandas as pd
+heroes = {'Hair color':['No Hair','BLOND','BLACK'],'Gender':['Fmale','male','Fmale']}
+heroes = pd.DataFrame(heroes)
 # Make all the values in the 'Hair color' column lowercased
 heroes['Hair color'] = heroes['Hair color'].str.lower()
   
@@ -131,7 +131,37 @@ text = 'Oct 23, 2000; Feb 25, 1999; which to print'
 
 re.findall(pattern,text)
 
-################  ###############
+
+
+text ='Python has 4 main data structures: list, tuple, set, and dictionary.'
+# Compile the regular expression
+pattern = re.compile(r'[,:\.\s]+')
+
+# Split the text that only words or numbers are left
+words = re.split(pattern, text)
+print(words)
+
+# Define an easier way to extract words or numbers
+alt_pattern = re.compile(r'[A-Za-z\d]+')
+print(re.findall(alt_pattern, text))
+
+
+################  Iterable ###############
+
+def retrieve_character_indices(string):
+    character_indices = dict()
+    # Define the 'for' loop
+    for index, character in enumerate(string):
+        # Update the dictionary if the key already exists
+        if character in character_indices:
+            character_indices[character].append(index)
+        # Update the dictionary if the key is absent
+        else:
+            character_indices[character] = [index]
+            
+    return character_indices
+  
+print(retrieve_character_indices('enumerate an Iterable'))
 
 ################  ###############
 
