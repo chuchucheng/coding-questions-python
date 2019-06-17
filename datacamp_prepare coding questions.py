@@ -54,11 +54,59 @@ for x in range_x:
         
         circ_parab[(1.8,1.4)]
 
-################  ###############
+################ String indexing and concatenation ###############
+alphabet ='abcdefghijklmnopqrstuvwxyz'       
+        
+def encrypt(text, key):
+  
+    result = ''
 
-################  ###############
+    # Fill in the blanks to create an encrypted text
+    for char in text.lower():
+        idx = (alphabet.index(char) + key) % len(alphabet)
+        # for decription: idx = alphabet.index(char) - key
+        result = result + alphabet[idx]
 
-################  ###############
+    return result
+
+# Check the encryption function with the shift equals to 2
+print(encrypt("datacamp", 2))    
+
+################ String ###############
+text ='StRing ObJeCts haVe mANy inTEResting pROPerTies'
+# Create a word list from the string stored in 'text'
+word_list = text.split()
+
+# Make every other word uppercased; otherwise - lowercased
+for i in range(len(word_list)):
+    if (i + 1) % 2 == 0:
+        word_list[i] = word_list[i].upper()
+    else:
+        word_list[i] = word_list[i].lower()
+        
+# Join the words back and form a new string
+new_text = ' '.join(word_list)
+print(new_text)
+
+# fix string errors
+heroes = ''
+heroes['Hair color'] = ('No Hair','BLOND','BLACK')
+heroes['Gender'] = ['Fmale','male']
+# Make all the values in the 'Hair color' column lowercased
+heroes['Hair color'] = heroes['Hair color'].str.lower()
+  
+# Check the values in the 'Hair color' column
+print(heroes['Hair color'].value_counts())
+
+# Substitute 'Fmale' with 'Female' in the 'Gender' column
+heroes["Gender"] = heroes['Gender'].str.replace('Fmale','Female')
+
+# Check if there is no occurences of 'Fmale'
+print(heroes['Gender'].value_counts())
+
+
+################ regular expression ###############
+import re
 
 ################  ###############
 
