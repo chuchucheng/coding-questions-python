@@ -203,7 +203,9 @@ for (key, value) in word_counter.items():
     if value > 1:
         print("{}: {}".format(key, value))
         
-################  ###############
+################ prime number ###############
+import math
+
 
 ################  ###############
 
