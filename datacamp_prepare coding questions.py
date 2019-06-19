@@ -163,8 +163,46 @@ def retrieve_character_indices(string):
   
 print(retrieve_character_indices('enumerate an Iterable'))
 
-################  ###############
 
+
+column_counts = dict()
+# Traverse through the columns in the heroes DataFrame
+for column_name, series in heroes.iteritems():
+    # Retrieve the values stored in series in a list form
+    values = list(series)
+    category_counts = dict()  
+    # Traverse through unique categories in values
+    for category in set(values):
+        # Count the appearance of category in values
+        category_counts[category] = values.count(category)
+    
+    column_counts[column_name] = category_counts
+    
+print(column_counts)
+
+################ List comprehension ###############
+spam = 'Dear User, Our Administration Team needs to inform you that you are reaching the storage limit of your Mailbox account.\nYou have to verify your account within the next 24 hours.\nOtherwise, it will not be possible to use the service.\nPlease, click on the link below to verify your account and continue using our service. Your Administration Team.'
+def create_word_list(string):
+    # Finding all the words
+    pattern = re.compile(r'\w+')
+    words = re.findall(pattern, string)
+    return words
+
+# Convert the text to lower case and create a word list
+words = create_word_list(spam.lower())
+
+# Create a set storing only unique words
+word_set = set(words)
+
+# Create a dictionary that counts each word in the list
+tuples = [(word, words.count(word)) for word in word_set]
+word_counter = dict(tuples)
+
+# Printing words that appear more than once
+for (key, value) in word_counter.items():
+    if value > 1:
+        print("{}: {}".format(key, value))
+        
 ################  ###############
 
 ################  ###############
