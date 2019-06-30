@@ -206,12 +206,159 @@ for (key, value) in word_counter.items():
 ################ prime number ###############
 import math
 
+cands = [1, 5, 9, 13, 17, 21, 25, 29, 33, 37, 41, 45, 49]
 
-################  ###############
+def is_prime(n):
+    # Define the initial check
+    if n < 2:
+       return False
+    # Define the loop checking if a number is not prime
+    for i in range(2, int(math.sqrt(n)) + 1):
+        if n % i == 0:
+            return False
+    return True
+    
+# Filter prime numbers into the new list
+primes = [num for num in cands if is_prime(num) == True]
+print("primes = " + str(primes))
 
-################  ###############
+################ Coprime number sequence ###############
+list1 = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70]
+list2 = [7, 14, 21, 28, 35, 42, 49, 56, 63, 70, 77, 84, 91, 98]
+#Two numbers a and b are coprime if their Greatest Common Divisor (GCD) is 1.
+def gcd(a, b):
+    # Define the while loop as described
+    while b != 0:
+        temp_a = a
+        a = b
+        b = temp_a % b   
+    # Complete the return statement
+    return a
+    
+# Create a list of tuples defining pairs of coprime numbers
+coprimes = [(i,j) for i in list1 
+                 for j in list2 if gcd(i,j) == 1]
+print(coprimes)
 
-################  ###############
+################ zip ###############
+
+wlist = [['Python', 'creativity', 'universe'],
+ ['interview', 'study', 'job', 'university', 'lecture'],
+ ['task', 'objective', 'aim', 'subject', 'programming', 'test', 'research']]
+
+# Define a function searching for the longest word
+def get_longest_word(words):
+    longest_word = ''
+    for word in words:
+        if len(word) > len(longest_word):
+            longest_word = word
+    return longest_word
+
+# Create lists with the lengths and longest words
+lengths = [len(item) for item in wlist]
+words = [get_longest_word(item) for item in wlist]
+
+# Combine the resulting data into one iterable object
+for item in zip(wlist, lengths, words):
+    print(item)
+    
+    
+# Create a list of tuples with lengths and longest words
+result = [
+    (len(item), get_longest_word(item)) for item in wlist
+]
+
+# Unzip the result    
+lengths, words = zip(*result)
+
+for item in zip(wlist, lengths, words):
+    print(item)
+
+# Create a list of tuples with words and their lengths
+word_lengths = [
+    (item, len(item)) for items in wlist for item in items
+]
+
+# Unwrap the word_lengths
+words, lengths = zip(*word_lengths)
+
+# Create a zip object
+col_names = ['word', 'length']
+result = zip(col_names, [words, lengths])
+
+# Convert the result to a dictionary and build a DataFrame
+data_frame = pd.DataFrame(dict(result))
+print(data_frame)
+
+################ Generator ###############
+def shift_string(string, shift):
+    len_string = len(string)
+    # Define a for loop with the yield statement
+    # shift to left by x letters
+    for idx in range(0, len_string):
+        yield string[(idx - shift) % len_string]
+       
+# Create a generator
+gen = shift_string('DataCamp', 5)
+
+# Create a new string using the generator and print it out
+string_shifted = ''.join(gen)
+print(string_shifted)
+
+
+### throw dice and calculate ratio
+import random
+def simulate_dice_throws():
+    total, out = 0, dict([(i, [0, 0]) for i in range(1, 7)])
+    while True:
+        # Simulate a single toss to get a new number
+        num = random.randint(1,6)
+        total += 1
+        # Update the number and the ratio of realizations
+        out[num][0] +=1
+        out[num][1] = round(out[num][0]/total, 2)
+        # Yield the updated dictionary
+        yield out
+
+# Create the generator and simulate 1000 tosses
+dice_simulator = simulate_dice_throws()
+for i in range(1, 101):
+    print(str(i) + ': ' + str(next(dice_simulator)))
+    
+    
+    
+# Rewrite func1() as a generator comprehension
+def func1(n):
+  for i in range(0, n):
+    yield i**2
+    
+gen = (i**2 for i in range(0,10))
+
+for item in zip(gen, func1(10)):
+    print(item)
+
+# Rewrite func2() as a generator comprehension
+def func2(n):
+  for i in range(0, n):
+     if i%2 == 0:
+       yield 2*i
+       
+gen = (2*i for i in range(0,10) if i%2 ==0)
+
+for item in zip(gen, func2(20)):
+    print(item)
+
+
+# Rewrite func3() as a generator comprehension
+def func3(n, m):
+  for i in func1(n):
+    for j in func2(m):
+      yield ((i, j), i + j)
+      
+gen = (((i,j), i+j) for j in func2(10) for i in func1(8))
+
+for item in zip(gen, func3(8, 10)):
+    print(item)
 
 ################  ###############
 
