@@ -360,16 +360,209 @@ gen = (((i,j), i+j) for j in func2(10) for i in func1(8))
 for item in zip(gen, func3(8, 10)):
     print(item)
 
-################  ###############
+################ functions with different argument types ###############
+# Define the function with an arbitrary number of arguments
+    # sort num and string
+def sort_types(*args):
+    nums, strings = [], []    
+    for arg in args:
+        # Check if 'arg' is a number and add it to 'nums'
+        if isinstance(arg, (int,float)) == True:
+            nums.append(arg)
+        # Check if 'arg' is a string and add it to 'strings'
+        elif isinstance(arg, str) == True:
+            strings.append(arg)
+    
+    return (nums, strings)
+            
+print(sort_types(1.57, 'car', 'hat', 4, 5, 'tree', 0.89))
 
-################  ###############
 
-################  ###############
 
-################  ###############
 
-################  ###############
+# Define the function with an arbitrary number of arguments
+def key_types(**kwargs):
+    dict_type = dict()
+    # Iterate over key value pairs
+    for key, value in kwargs.items():
+        # Update a list associated with a key
+        if type(value) in dict_type:
+            dict_type[type(value)].append(key)
+        else:
+            dict_type[type(value)] = [key]
+            
+    return dict_type
+  
+res = key_types(a=1, b=2, c=(1, 2), d=3.1, e=4.2)
+print(res)
 
+
+
+
+# Define the arguments passed to the function
+def sort_all_types(*args, **kwargs):
+
+    # Find all the numbers and strings in the 1st argument
+    nums1, strings1 = sort_types(*args)
+    
+    # Find all the numbers and strings in the 2nd argument
+    nums2, strings2 = sort_types(*kwargs.values())
+    
+    return (nums1 + nums2, strings1 + strings2)
+  
+res = sort_all_types(
+	1, 2.0, 'dog', 5.1, num1 = 0.0, num2 = 5, str1 = 'cat'
+)
+print(res)
+
+
+
+################ Lambda expression ###############
+# Take x and return x squared if x > 0 and 0, otherwise
+squared_no_negatives = lambda x: x**2 if x>0 else 0
+print(squared_no_negatives(2.0))se
+print(squared_no_negatives(-1))
+
+# Take a list of integers nums and leave only even numbers
+get_even = lambda nums: [n for n in nums if n % 2 == 0]
+print(get_even([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]))
+
+
+# Take strings s1, s2 and list their common characters
+common_chars = lambda s1,s2: [x for x in s1 if x in s2]
+print(common_chars('pasta', 'pizza'))
+
+
+import math
+lambda3 = lambda *nums: math.sqrt(sum([n**2 for n in nums]))
+print(str(lambda3(3, 4, 5)))
+
+
+
+
+# Sort words by the string length
+words.sort(key=lambda s: len(s))
+print(words)
+
+# Sort words by the last character in a string
+words.sort(key=lambda s: s[-1])
+print(words)
+
+# Sort words by the total amount of certain characters
+words.sort(key=lambda s: s.count('a') +s.count('b')+ s.count('c'))
+print(words)
+
+################ map filter and reduce ###############
+def my_zip(*args):
+    
+    # Retrieve Iterable lengths and find the minimal length
+    lengths = list(map(len,args))
+    min_length = min(lengths)
+
+    tuple_list = []
+    for i in range(0, min_length):
+        # Append new items to the 'tuple_list'
+        tuple_list.append(tuple(map(lambda x:x[i],args)))
+
+    return tuple_list
+
+result = my_zip([1, 2, 3], ['a', 'b', 'c', 'd'], 'DataCamp')
+print(result)
+
+
+
+nums = list(range(100))
+# Filter out all the numbers in nums divisible by 3 or 5
+print(nums)
+fnums = filter(lambda n: n%3 == 0 or n%5 ==0, nums)
+print(list(fnums))
+
+
+string = 'Ordinary Least Squares'
+# Return the string without its vowels
+print(string)
+vowels = ['a','e','i','o','u']
+fstring = filter(lambda word:[x for x in word if x not in vowels], string)
+print(''.join(fstring))
+
+spells = ['riddikulus',
+ 'obliviate',
+ 'sectumsempra',
+ 'avada kedavra',
+ 'alohomora',
+ 'lumos',
+ 'expelliarmus',
+ 'expecto patronum']
+# Filter all the spells in spells with more than two 'a's
+print(spells)
+fspells = filter(lambda x: x.count('a') >=2, spells )
+print(list(fspells))
+
+
+# Reverse a string using reduce()
+string = 'DataCamp'
+inv_string = reduce(lambda x, y: y + x, string)
+print('Inverted string = ' + inv_string) 
+
+# Find common items shared among all the lists in lists
+lists = [[1, 4, 8, 9], [2, 4, 6, 9, 10, 1], [9, 0, 1, 2, 4]]
+common_items = reduce(lambda x, y: set(x).intersection(y), lists)
+print('common items = ' + str(common_items))
+
+# Convert a number sequence into a single number
+nums = [5, 6, 0, 1]
+num = reduce(lambda x,y: x*10+y,nums)
+print(str(nums) + ' is converted to ' + str(num))
+
+
+################ recursion  ###############
+#Fibonacci sequence
+def fib(n):
+
+  if n < 2:
+    return (n, 1)
+
+  fib1 = fib(n-1)
+  fib2 = fib(n-2)
+
+  return (fib1[0] + fib2[0], fib1[1] + fib2[1] + 1)
+
+
+# Calculate an average value of the sequence of numbers
+def average(nums):
+  
+    # Base case
+    if len(nums) == 1:  
+        return nums[0]
+    
+    # Recursive call
+    n = len(nums)
+    return (nums[0] + (n - 1) * average(nums[1:])) / n  
+
+# Testing the function
+print(average([1, 2, 3, 4, 5]))
+
+
+## approximate Pi
+# Write an expression to get the k-th element of the series 
+get_elmnt = lambda k: ((-1)**k)/(2*k+1)
+
+def calc_pi(n):
+    curr_elmnt = get_elmnt(n)
+    
+    # Define the base case
+    if n==0:
+    	return 4 
+      
+    # Make the recursive call
+    return 4*curr_elmnt + calc_pi(n-1)
+  
+# Compare the approximated Pi value to the theoretical one
+print("approx = {}, theor = {}".format(calc_pi(500), math.pi))
+
+
+################ Numpy ###############
+import numpy as np
 ################  ###############
 
 ################  ###############
