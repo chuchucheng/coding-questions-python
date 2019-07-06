@@ -561,9 +561,45 @@ def calc_pi(n):
 print("approx = {}, theor = {}".format(calc_pi(500), math.pi))
 
 
-################ Numpy ###############
+################ apply ###############
+# Redefine the function to accept keyword arguments
+def rescale(series, low = 0, high =100):
+   return series * (high - low)/100 + low
+
+# Rescale the data in cols to lie between 1 and 10
+cols = ['math score', 'reading score', 'writing score']
+scores[cols] = scores[cols].apply(rescale, args=[1,10])
+print(scores[cols].head())
+
+################ groupby ###############
 import numpy as np
-################  ###############
+
+# Group the data by two factors specified in the context
+groups = heroes.groupby(['Alignment','Publisher'])
+
+# Filter groups having more than 10 valid bmi observations
+fheroes = groups.filter(lambda x: x['bmi'].count()>10)
+
+# Group the filtered data again by the same factors
+fgroups = fheroes.groupby(['Alignment','Publisher'])
+
+# Calculate the mean and standard deviation of the BMI index
+result = fgroups['bmi'].agg([np.mean, np.std])
+print(result)
+
+
+# Define a lambda function that imputes NaN values in series
+impute = lambda series: series.fillna(series.mean())
+
+# Impute NaNs in the bmi column of imp_globmean
+imp_globmean['bmi'] = impute(fheroes['bmi'])
+print("Global mean = " + str(fheroes['bmi'].mean()) + "\n")
+
+groups = imp_grpmean.groupby(['Publisher', 'Alignment'])
+
+# Impute NaNs in the bmi column of imp_grpmean
+imp_grpmean['bmi'] = groups['bmi'].transform(impute)
+print(groups['bmi'].mean())
 
 ################  ###############
 
