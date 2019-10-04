@@ -1,0 +1,26 @@
+name = "ada lovelace"
+print(name.title())
+print(name.upper())
+print(name.lower())
+
+制表符\t
+换行符\n
+
+.rstrip()  #right
+.lstrip()  #left
+.strip()   #both
+
+3 ** 3
+
+str(23)
+
+py_list = [,,]
+.append()
+.insert(0,)
+del list[0]
+
+
+popped_motorcycle = motorcycles.pop()
+print(motorcycles)
+print(popped_motorcycle)
+.pop(0)
