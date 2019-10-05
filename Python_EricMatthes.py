@@ -25,3 +25,19 @@ popped_names = names.pop()
 print(names)
 print(popped_names)
 names.pop(0)
+
+
+nocome = 'jack'
+ names.remove(nocome)
+print(names)
+print("\n" + nome.title() + " is not coming.")
+
+names.sort() # permanant sorting
+names.sort(reverse=True)
+
+print(sorted(cars)) # temporary sorting
+print(sorted(cars, reverse = True))
+
+names.reverse()  #reverse original order
+
+print('I am goint to ' + str(len(places)) + ' places.')
