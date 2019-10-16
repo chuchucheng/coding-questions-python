@@ -109,53 +109,70 @@ def combine(n: int, k: int):
 # 写一个函数，每次输出一个sample的对象，概率要符合给出的概率
 import random
 def sampling(l:list, w:list):
-        """
-        l is list of numbers, w is list of weights
-        """
-        presum = []
-        len_w = len(w)
-        presum.append(w[0] * len_w)
-        for i in range(1, len_w):
-            presum.append(presum[i - 1] + w[i]*len_w)
-
-        rand = random.uniform(0, len_w)
-        left, right = 0, len_w - 1
-        while left + 1 < right:
-            mid = (left + right) // 2
-            if rand >= presum[mid]:
-                left = mid
-            else:
-                right = mid
-        if rand < presum[left]:
-            return l[left]
-        return l[right]
+    rand = random.uniform(0,1)
     
+    w_cul = [w[0]]
+    for i in range(1, len(w)):
+        w_cul.append(wcul[i-1] + w[i])
+    for j,w_c in enumerate(w_cul):
+        if rand < w_c:
+            return j
+    return len(w)-1
+
+
+def sampling(l:list, w:list):
+    rand = random.uniform(0,1)
+    
+    w_cul = [w[0]]
+    for i in range(1, len(w)):
+        w_cul.append(w_cul[i-1] + w[i])
+    left = 0
+    right = len(w) - 1
+    while left + 1 < right: # prevent infinite loop
+        mid = (left + right) // 2
+        if rand > w_cul[mid]:
+            left = mid
+        else:
+            right = mid
+    if rand < w_cul[left]:
+        return left
+    else:
+        return right
+
+
     
 # Question 1.  将string倒写， 比如 “hello word!" 写成 "!drow olleh"
 def reverse_string(string):
     result = ''
-    for i in range(len(string)+1):
+    for i in range(1, len(string)+1):
         result += string[-i] 
     return result
-        
+ 
+def reverse_string(string):
+    result = ''
+    for i in range(len(string)-1, -1, -1):
+        result += string[i]
+    return result
+       
 
 def reverse_string(string):
     return string[::-1]
         
 #Question 2. 写一个function，input是string， output要数字母和字母个数。比如 input：“BBWWWB”; output：“2B3W1B”
-def count_string(string):
-    result_num = 1
-    result_string = string[0]
+def count_letter(string):
+    if len(string) < 1:
+        return ''
+    counter = 1
     result = ''
-    for i in range(1, len(string)):
+    for i in range(1,len(string)):
         if string[i] == string[i-1]:
-            result_num += 1
+            counter += 1   
         else:
-            result += str(result_num) + result_string
-            result_string = string[i]
-            result_num = 1
-    return result + str(result_num) + result_string
+            result += str(counter) + string[i-1]
+            counter = 1
+    result += str(counter) + string[-1]
 
+    return result
 
 def countChar(string):
     counter = 0
@@ -192,10 +209,10 @@ def numfind(word):
 # return it's index. If it doesn't exist, return -1. 
     
 def uniq_char(string):
-    for char in string:
+    for i, char in enumerate(string):
         count_char = string.count(char)
         if count_char == 1:
-            return string.index(char)    
+            return i    
     return -1
 
 
